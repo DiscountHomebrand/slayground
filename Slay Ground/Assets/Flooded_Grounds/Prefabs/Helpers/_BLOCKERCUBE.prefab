@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2339290}
   - component: {fileID: 6562970}
   - component: {fileID: 114800394831905180}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: _BLOCKERCUBE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
