@@ -17,14 +17,21 @@ public class CharController_Motor : MonoBehaviour {
 
 	void Start(){
 		//LockCursor ();
+		
 		character = GetComponent<CharacterController> ();
 		if (Application.isEditor) {
 			webGLRightClickRotation = false;
-			sensitivity = sensitivity * 1.5f;
+			sensitivity = sensitivity * 5f;
 		}
 	}
 
-
+	void OnApplicationFocus(bool hasFocus) {
+		if (hasFocus) {
+			Cursor.visible=false;
+			Cursor.lockState=CursorLockMode.Locked;
+		}
+	}
+	
 	void CheckForWaterHeight(){
 		if (transform.position.y < WaterHeight) {
 			gravity = 0f;			
