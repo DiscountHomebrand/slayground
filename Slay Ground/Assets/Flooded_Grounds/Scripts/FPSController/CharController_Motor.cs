@@ -14,7 +14,6 @@ public class CharController_Motor : MonoBehaviour {
 	public GameObject cam;
 	float moveFB, moveLR;
 	float rotX, rotY;
-	float gravity = -9.8f;
 
 	// Pitch (x rotation) of the camera
 	float cameraRotation = 0.0f;
@@ -39,6 +38,8 @@ public class CharController_Motor : MonoBehaviour {
 	int clipSize = 60;
 	int remainingAmmo;
 
+	// Current y velocity of character
+	float yVelocity = 0.0f;
 
 	void Start(){
 		//LockCursor ();
@@ -61,23 +62,21 @@ public class CharController_Motor : MonoBehaviour {
 	}
 	
 	void CheckForWaterHeight(){
-		if (transform.position.y < WaterHeight) {
-			gravity = 0f;			
-		} else {
-			gravity = -9.8f;
-		}
+		//if (transform.position.y < WaterHeight) {
+		//	gravity = 0f;			
+		//} else {
+		//	gravity = -9.8f;
+		//}
 	}
 
 	void Update(){
-		moveFB = Input.GetAxis ("Horizontal") * speed;
-		moveLR = Input.GetAxis ("Vertical") * speed;
+		moveFB = Input.GetAxis("Horizontal") * speed;
+		moveLR = Input.GetAxis("Vertical") * speed;
 
-		rotX = Input.GetAxis ("Mouse X") * sensitivity;
-		rotY = Input.GetAxis ("Mouse Y") * sensitivity;
+		rotX = Input.GetAxis("Mouse X") * sensitivity;
+		rotY = Input.GetAxis("Mouse Y") * sensitivity;
 
 		CheckForWaterHeight();
-
-		Vector3 movement = new Vector3 (moveFB, gravity, moveLR);
 
 		CameraRotation (cam, rotX, rotY);
 
@@ -93,8 +92,20 @@ public class CharController_Motor : MonoBehaviour {
 			Reload();
 		}
 
+		if (!character.isGrounded) {
+			yVelocity -= 9.8f * Time.deltaTime;
+		} else {
+			yVelocity = -1.0f;
+		}
+
+		if (character.isGrounded && Input.GetKeyDown(KeyCode.Space)) {
+			Jump();
+		}
+
+		Vector3 movement = new Vector3 (moveFB, yVelocity, moveLR);
+
 		movement = transform.rotation * movement;
-		character.Move (movement * Time.deltaTime);
+		character.Move(movement * Time.deltaTime);
 	}
 
 	void CameraRotation(GameObject cam, float rotX, float rotY){		
@@ -147,5 +158,9 @@ public class CharController_Motor : MonoBehaviour {
 	void UpdateAmmo(int amount) {
 		remainingAmmo = amount;
 		ammoText.text = remainingAmmo.ToString() + "/" + clipSize.ToString();
+	}
+
+	void Jump() {
+		yVelocity = 5.0f;
 	}
 }
