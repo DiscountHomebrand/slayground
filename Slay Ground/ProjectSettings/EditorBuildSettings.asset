@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Flooded_Grounds/Scenes/UI_Scene.unity
+    guid: bd5475a790ed5c949941059152621387
+  - enabled: 1
+    path: Assets/Flooded_Grounds/Scenes/LoadingScreen.unity
+    guid: 835ad4ba026c28b4b91f32ffd1649b4b
+  - enabled: 1
+    path: Assets/Flooded_Grounds/Scenes/Scene_A.unity
+    guid: c0d944ca9defd20449bc336e50d75a08
   m_configObjects: {}

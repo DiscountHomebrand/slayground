@@ -8,7 +8,7 @@ using UnityEngine;
 public class CharController_Motor : MonoBehaviour {
 
 	public float speed = 10.0f;
-	public float sensitivity = 30.0f;
+	public float sensitivity;
 	public float WaterHeight = 15.5f;
 	CharacterController character;
 	public GameObject cam;
@@ -41,27 +41,14 @@ public class CharController_Motor : MonoBehaviour {
 	// Current y velocity of character
 	float yVelocity = 0.0f;
 
-	void Start(){
-		//LockCursor ();
-
+	void Start() {
 		UpdateAmmo(clipSize);
 		
 		character = GetComponent<CharacterController>();
 		audioSource = GetComponent<AudioSource>();
-
-		if (Application.isEditor) {
-			sensitivity = sensitivity * 5f;
-		}
 	}
 
-	void OnApplicationFocus(bool hasFocus) {
-		if (hasFocus) {
-			Cursor.visible=false;
-			Cursor.lockState=CursorLockMode.Locked;
-		}
-	}
-	
-	void CheckForWaterHeight(){
+	void CheckForWaterHeight() {
 		//if (transform.position.y < WaterHeight) {
 		//	gravity = 0f;			
 		//} else {
@@ -69,12 +56,20 @@ public class CharController_Motor : MonoBehaviour {
 		//}
 	}
 
-	void Update(){
+	void Update() {
+		if (PauseManager.IsGamePaused()) {
+			return;
+		}
+
 		moveFB = Input.GetAxis("Horizontal") * speed;
 		moveLR = Input.GetAxis("Vertical") * speed;
 
 		rotX = Input.GetAxis("Mouse X") * sensitivity;
 		rotY = Input.GetAxis("Mouse Y") * sensitivity;
+
+		if (rotX != 0 || rotY != 0) {
+			Debug.Log(rotX + " " + rotY);
+		}
 
 		CheckForWaterHeight();
 
@@ -108,10 +103,10 @@ public class CharController_Motor : MonoBehaviour {
 		character.Move(movement * Time.deltaTime);
 	}
 
-	void CameraRotation(GameObject cam, float rotX, float rotY){		
-		transform.Rotate (0, rotX * Time.deltaTime, 0);
+	void CameraRotation(GameObject cam, float rotX, float rotY) {		
+		transform.Rotate (0, rotX, 0);
 
-		cameraRotation = Math.Clamp(cameraRotation - rotY * Time.deltaTime, -85.0f, 85.0f);
+		cameraRotation = Math.Clamp(cameraRotation - rotY, -85.0f, 85.0f);
 		cam.transform.localEulerAngles = new Vector3(cameraRotation, 0, 0);
 	}
 
