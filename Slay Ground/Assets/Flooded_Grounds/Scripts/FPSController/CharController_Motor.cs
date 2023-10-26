@@ -44,6 +44,10 @@ public class CharController_Motor : MonoBehaviour {
 
 	public Image healthBar;
 
+	int currency = 0;
+
+	public TMP_Text currencyText;
+
 	// Current y velocity of character
 	float yVelocity = 0.0f;
 
@@ -158,6 +162,10 @@ public class CharController_Motor : MonoBehaviour {
 		UpdateHealth(newHealth);
 	}
 
+	public void AddCurrency(int amount) {
+		UpdateCurrency(currency + amount);
+	}
+
 	void Reload() {
 		UpdateAmmo(clipSize);
 	}
@@ -170,6 +178,11 @@ public class CharController_Motor : MonoBehaviour {
 	void UpdateHealth(int value) {
 		currentHealth = value;
 		healthBar.fillAmount = (float)currentHealth / (float)maxHealth;
+	}
+	
+	void UpdateCurrency(int amount) {
+		currency = amount;
+		currencyText.text = "$" + currency.ToString();
 	}
 
 	void Jump() {
