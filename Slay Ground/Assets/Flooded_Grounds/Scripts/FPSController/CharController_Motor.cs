@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
 
@@ -38,11 +39,17 @@ public class CharController_Motor : MonoBehaviour {
 	int clipSize = 60;
 	int remainingAmmo;
 
+	int maxHealth = 100;
+	int currentHealth;
+
+	public Image healthBar;
+
 	// Current y velocity of character
 	float yVelocity = 0.0f;
 
 	void Start() {
 		UpdateAmmo(clipSize);
+		UpdateHealth(maxHealth);
 		
 		character = GetComponent<CharacterController>();
 		audioSource = GetComponent<AudioSource>();
@@ -146,6 +153,11 @@ public class CharController_Motor : MonoBehaviour {
 		}
 	}
 
+	public void Damage(int amount) {
+		int newHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
+		UpdateHealth(newHealth);
+	}
+
 	void Reload() {
 		UpdateAmmo(clipSize);
 	}
@@ -153,6 +165,11 @@ public class CharController_Motor : MonoBehaviour {
 	void UpdateAmmo(int amount) {
 		remainingAmmo = amount;
 		ammoText.text = remainingAmmo.ToString() + "/" + clipSize.ToString();
+	}
+
+	void UpdateHealth(int value) {
+		currentHealth = value;
+		healthBar.fillAmount = (float)currentHealth / (float)maxHealth;
 	}
 
 	void Jump() {
