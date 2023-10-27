@@ -222,6 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 467182}
   - component: {fileID: 20511700}
+  - component: {fileID: 6115411581367191701}
   m_Layer: 0
   m_Name: Struct_ExtStairs_A
   m_TagString: Untagged
@@ -274,6 +275,26 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2339576}
   m_Enabled: 1
+--- !u!114 &6115411581367191701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: -1372625422
+  m_StartPoint: {x: -3.661621, y: 2.1776218, z: 1.1474304}
+  m_EndPoint: {x: -3.5249023, y: 0.82956505, z: 4.4112854}
+  m_Width: 4.9345613
+  m_CostModifier: -1
+  m_Bidirectional: 1
+  m_AutoUpdatePosition: 0
+  m_Area: 0
 --- !u!1 &169788
 GameObject:
   m_ObjectHideFlags: 0
