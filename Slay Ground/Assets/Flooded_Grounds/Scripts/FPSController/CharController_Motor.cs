@@ -155,8 +155,23 @@ public class CharController_Motor : MonoBehaviour {
 		if (Physics.Raycast(cam.transform.position, camDirection, out hitInfo)) {
 			// Instantiate new bullet impact pointing back at the camera
 			Instantiate(bulletImpactPrefab, hitInfo.point, Quaternion.FromToRotation(Vector3.forward, -camDirection));
+
+			// if zombie hit
+			if (hitInfo.collider.gameObject.layer== 3){
+				ZombieNav zombieNav = hitInfo.collider.transform.parent.GetComponent<ZombieNav>();
+				//Debug.Log("health " +zombieNav.health);
+				if(hitInfo.collider.gameObject.tag=="ZombieHead"){
+					zombieNav.Headshot();
+					//Debug.Log("Raycast hit headshot" );
+				}else{
+					zombieNav.Damage();
+					//Debug.Log("Raycast hit body" );
+					
+				}
+			}
 			//Debug.Log("Raycast hit " + hitInfo.collider.gameObject.name);
 		}
+
 	}
 
 	public void Damage(int amount) {

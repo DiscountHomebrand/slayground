@@ -3,12 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Zombie
+  - ZombieBody
+  - ZombieHead
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Zombie
   - Water
   - UI
   - 
