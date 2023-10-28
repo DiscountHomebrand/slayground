@@ -102,10 +102,16 @@ public class CharController_Motor : MonoBehaviour {
 
 		if (character.isGrounded && Input.GetKeyDown(KeyCode.Space)) {
 			Jump();
+			//dont think its good given complexity of map, may cause pathing bugs-h
 		}
 
 		Vector3 movement = new Vector3 (moveFB, yVelocity, moveLR);
-
+		
+		
+		//this fixes diagonals causing doubled movement speed
+		if (movement.magnitude > 10){
+			movement = movement.normalized * 10;
+		}
 		movement = transform.rotation * movement;
 		character.Move(movement * Time.deltaTime);
 	}
