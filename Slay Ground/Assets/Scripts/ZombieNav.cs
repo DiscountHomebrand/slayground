@@ -13,6 +13,8 @@ public class ZombieNav : MonoBehaviour
 
     public float health = 100f;
 
+    public Animator animator;
+
     CharacterController mController;
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,7 @@ public class ZombieNav : MonoBehaviour
       
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.updateRotation = true;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -57,11 +60,9 @@ public class ZombieNav : MonoBehaviour
                     navMesh.velocity =  Vector3.zero;
 
                     //insert attacking animation
+                    animator.SetTrigger("Attack");
                     attacking = true;
                 }
-            }else{
-                //if atacking animation finished nextline
-                attacking=false;
             }
             
         }else{
@@ -77,5 +78,9 @@ public class ZombieNav : MonoBehaviour
 
     public void Damage(){
         health -=10f;
+    }
+
+    public void AttackingFinished(){
+        attacking = false;
     }
 }
