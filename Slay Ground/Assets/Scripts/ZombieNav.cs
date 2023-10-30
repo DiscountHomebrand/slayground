@@ -10,6 +10,7 @@ public class ZombieNav : MonoBehaviour
     public GameObject player;
     Vector3 mVelocity ;
     bool attacking = false;
+    bool lastHeadshot = false;
 
     public float health = 100f;
 
@@ -65,22 +66,35 @@ public class ZombieNav : MonoBehaviour
                 }
             }
             
-        }else{
+        }else{  
+            attacking = false;
             // play die animation
-            // if die animation done nextline
-            Destroy(gameObject,1);
+            if (lastHeadshot){ // last shot was headshot
+                Transform zHead = transform.Find("Z_Head");
+                Destroy(zHead.gameObject);
+                animator.SetTrigger("Headshot");
+            }else{//last shot was bodyshot
+                animator.SetTrigger("Bodyshot");
+            }
+            
         }
     }
 
     public void Headshot(){
         health -= 50f;
+        lastHeadshot = true;
     }
 
     public void Damage(){
         health -=10f;
+        lastHeadshot = false;
     }
 
     public void AttackingFinished(){
         attacking = false;
+    }
+
+    public void FinishedDying(){
+        Destroy(gameObject,1);
     }
 }
