@@ -83,7 +83,7 @@ public class CharController_Motor : MonoBehaviour {
 		rotY = Input.GetAxis("Mouse Y") * sensitivity;
 
 		if (rotX != 0 || rotY != 0) {
-			Debug.Log(rotX + " " + rotY);
+			//Debug.Log(rotX + " " + rotY);
 		}
 
 		CheckForWaterHeight();

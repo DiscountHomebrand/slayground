@@ -16,6 +16,8 @@ public class ZombieNav : MonoBehaviour
 
     public Animator animator;
 
+    GameObject[] armChildren ;
+
     CharacterController mController;
     // Start is called before the first frame update
     void Start()
@@ -27,6 +29,7 @@ public class ZombieNav : MonoBehaviour
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.updateRotation = true;
         animator = GetComponent<Animator>();
+        armChildren = GameObject.FindGameObjectsWithTag("ZombieArm");
     }
 
     // Update is called once per frame
@@ -63,11 +66,28 @@ public class ZombieNav : MonoBehaviour
                     //insert attacking animation
                     animator.SetTrigger("Attack");
                     attacking = true;
+                    //set arm attacker
+                    foreach (GameObject child in armChildren){
+                        ArmCollide armCol = child.GetComponent<ArmCollide>();
+                        if (armCol != null) {
+                        armCol.SetAttacking(attacking); 
+                        }
+                    }
                 }
+            }else { //currently swinging
+
             }
             
         }else{  
             attacking = false;
+
+            foreach (GameObject child in armChildren){
+                ArmCollide armCol = child.GetComponent<ArmCollide>();
+                if (armCol != null){
+                    armCol.SetAttacking(attacking); 
+                }
+            }
+
             // play die animation
             if (lastHeadshot){ // last shot was headshot
                 Transform zHead = transform.Find("Z_Head");
@@ -92,6 +112,16 @@ public class ZombieNav : MonoBehaviour
 
     public void AttackingFinished(){
         attacking = false;
+
+        foreach (GameObject child in armChildren)
+        {
+            ArmCollide armCol = child.GetComponent<ArmCollide>();
+            if (armCol != null)
+            {
+                armCol.SetAttacking(attacking); 
+            }
+        }
+       
     }
 
     public void FinishedDying(){
