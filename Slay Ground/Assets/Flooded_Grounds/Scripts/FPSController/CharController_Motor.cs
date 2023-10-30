@@ -41,8 +41,16 @@ public class CharController_Motor : MonoBehaviour {
 
 	int maxHealth = 100;
 	int currentHealth;
-
 	public Image healthBar;
+
+	int currency = 0;
+	public TMP_Text currencyText;
+
+	// Seconds it takes to reload
+	float reloadTime = 1.5f;
+	// Remaining seconds on current reload
+	float reloadTimer = 0.0f;
+	public Image reloadBar;
 
 	// Current y velocity of character
 	float yVelocity = 0.0f;
@@ -82,16 +90,21 @@ public class CharController_Motor : MonoBehaviour {
 
 		CameraRotation (cam, rotX, rotY);
 
-		if (shootTimer > 0.0f) {
-			shootTimer -= Time.deltaTime;
+		if (IsReloading()) {
+			UpdateReload();
 		}
+		else {
+			if (shootTimer > 0.0f) {
+				shootTimer -= Time.deltaTime;
+			}
 
-		if (shootTimer <= 0.0f && Input.GetMouseButton(0)) {
-			Shoot();
-		}
+			if (shootTimer <= 0.0f && Input.GetMouseButton(0)) {
+				Shoot();
+			}
 
-		if (Input.GetKeyDown(KeyCode.R)) {
-			Reload();
+			if (Input.GetKeyDown(KeyCode.R)) {
+				Reload();
+			}
 		}
 
 		if (!character.isGrounded) {
@@ -114,6 +127,20 @@ public class CharController_Motor : MonoBehaviour {
 		}
 		movement = transform.rotation * movement;
 		character.Move(movement * Time.deltaTime);
+	}
+
+	bool IsReloading() {
+		return reloadTimer > 0.0f;
+	}
+
+	void UpdateReload() {
+		reloadTimer -= Time.deltaTime;
+		reloadBar.fillAmount = Mathf.Clamp01(reloadTimer / reloadTime);
+
+		if (!IsReloading()) {
+			reloadBar.gameObject.SetActive(false);
+			UpdateAmmo(clipSize);
+		}
 	}
 
 	void CameraRotation(GameObject cam, float rotX, float rotY) {		
@@ -179,8 +206,14 @@ public class CharController_Motor : MonoBehaviour {
 		UpdateHealth(newHealth);
 	}
 
+	public void AddCurrency(int amount) {
+		UpdateCurrency(currency + amount);
+	}
+
 	void Reload() {
-		UpdateAmmo(clipSize);
+		reloadTimer = reloadTime;
+		reloadBar.gameObject.SetActive(true);
+		reloadBar.fillAmount = 1.0f;
 	}
 
 	void UpdateAmmo(int amount) {
@@ -191,6 +224,11 @@ public class CharController_Motor : MonoBehaviour {
 	void UpdateHealth(int value) {
 		currentHealth = value;
 		healthBar.fillAmount = (float)currentHealth / (float)maxHealth;
+	}
+	
+	void UpdateCurrency(int amount) {
+		currency = amount;
+		currencyText.text = "$" + currency.ToString();
 	}
 
 	void Jump() {

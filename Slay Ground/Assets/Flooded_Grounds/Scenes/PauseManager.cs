@@ -17,6 +17,16 @@ public class PauseManager : MonoBehaviour
 		Cursor.lockState = CursorLockMode.Locked;
     }
 
+    void OnDestroy() {
+        gamePaused = false;
+
+        Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
+
+        Time.timeScale = 1;
+        AudioListener.pause = false;
+    }
+
     void Update() {
         KeyCode pauseKey;
         if (Application.isEditor) {
