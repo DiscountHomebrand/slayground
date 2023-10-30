@@ -13,6 +13,8 @@ public class ZombieNav : MonoBehaviour
 
     public float health = 100f;
 
+    int currency = 5;
+
     CharacterController mController;
     // Start is called before the first frame update
     void Start()
@@ -39,7 +41,7 @@ public class ZombieNav : MonoBehaviour
     }
     private void FixedUpdate() {
         float distance = Vector3.Distance(player.transform.position,transform.position);
-        if (health >1){
+        if (!IsDead()){
 
             if (attacking==false){
                 if (distance >=2.0){
@@ -77,5 +79,13 @@ public class ZombieNav : MonoBehaviour
 
     public void Damage(){
         health -=10f;
+    }
+
+    public bool IsDead() {
+        return health <= 0;
+    }
+
+    public int GetCurrency() {
+        return currency;
     }
 }
