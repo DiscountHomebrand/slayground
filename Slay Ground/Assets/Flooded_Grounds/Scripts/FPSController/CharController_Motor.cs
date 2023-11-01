@@ -16,6 +16,12 @@ public class CharController_Motor : MonoBehaviour {
 	float moveFB, moveLR;
 	float rotX, rotY;
 
+
+
+	
+
+
+
 	// Pitch (x rotation) of the camera
 	float cameraRotation = 0.0f;
 
@@ -185,7 +191,7 @@ public class CharController_Motor : MonoBehaviour {
 
 			// if zombie hit
 			if (hitInfo.collider.gameObject.layer== 3){
-				ZombieNav zombieNav = hitInfo.collider.transform.parent.GetComponent<ZombieNav>();
+				ZombieNav zombieNav = hitInfo.collider.transform.GetComponentInParent<ZombieNav>();
 				//Debug.Log("health " +zombieNav.health);
 				if(hitInfo.collider.gameObject.tag=="ZombieHead"){
 					zombieNav.Headshot();
@@ -193,8 +199,8 @@ public class CharController_Motor : MonoBehaviour {
 				}else{
 					zombieNav.Damage();
 					//Debug.Log("Raycast hit body" );
-					
 				}
+				
 			}
 			//Debug.Log("Raycast hit " + hitInfo.collider.gameObject.name);
 		}
@@ -234,4 +240,6 @@ public class CharController_Motor : MonoBehaviour {
 	void Jump() {
 		yVelocity = 5.0f;
 	}
+
+	
 }

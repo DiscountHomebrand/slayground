@@ -18,7 +18,11 @@ public class ZombieNav : MonoBehaviour
 
     GameObject[] armChildren ;
 
+    public GameObject zombiePrefab;
+	GameObject[] gameObjects;
+
     CharacterController mController;
+    public bool dead= false;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +34,9 @@ public class ZombieNav : MonoBehaviour
         navMesh.updateRotation = true;
         animator = GetComponent<Animator>();
         armChildren = GameObject.FindGameObjectsWithTag("ZombieArm");
+
+        gameObjects = GameObject.FindGameObjectsWithTag("spawn");
+
     }
 
     // Update is called once per frame
@@ -45,11 +52,12 @@ public class ZombieNav : MonoBehaviour
        // navMesh.Move((mVelocity)*Time.deltaTime);
     }
     private void FixedUpdate() {
+
         float distance = Vector3.Distance(player.transform.position,transform.position);
         if (health >1){
 
             if (attacking==false){
-                if (distance >=2.0){
+                if (distance >=1.4f){
                     Quaternion targetRotation = Quaternion.LookRotation(navMesh.velocity);
                     transform.rotation = targetRotation;
                     navMesh.SetDestination(player.transform.position);  
@@ -67,10 +75,11 @@ public class ZombieNav : MonoBehaviour
                     animator.SetTrigger("Attack");
                     attacking = true;
                     //set arm attacker
+                    animator.applyRootMotion = true;
                     foreach (GameObject child in armChildren){
                         ArmCollide armCol = child.GetComponent<ArmCollide>();
                         if (armCol != null) {
-                        armCol.SetAttacking(attacking); 
+                            armCol.SetAttacking(attacking); 
                         }
                     }
                 }
@@ -80,7 +89,7 @@ public class ZombieNav : MonoBehaviour
             
         }else{  
             attacking = false;
-
+            animator.applyRootMotion = false;
             foreach (GameObject child in armChildren){
                 ArmCollide armCol = child.GetComponent<ArmCollide>();
                 if (armCol != null){
@@ -112,6 +121,7 @@ public class ZombieNav : MonoBehaviour
 
     public void AttackingFinished(){
         attacking = false;
+        animator.applyRootMotion = false;
 
         foreach (GameObject child in armChildren)
         {
@@ -125,6 +135,8 @@ public class ZombieNav : MonoBehaviour
     }
 
     public void FinishedDying(){
-        Destroy(gameObject,1);
+        Destroy(gameObject);
+        dead =true;
+
     }
 }

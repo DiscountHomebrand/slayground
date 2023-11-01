@@ -8,6 +8,7 @@ TagManager:
   - ZombieBody
   - ZombieHead
   - ZombieArm
+  - spawn
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - Zombie
   - Water
   - UI
-  - 
-  - 
+  - NoPlayer
+  - spawn
   - 
   - 
   - 
