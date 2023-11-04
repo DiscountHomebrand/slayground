@@ -15,9 +15,12 @@ public class ZombieNav : MonoBehaviour
 
     public float health = 100f;
 
+
     public Animator animator;
 
     ArmCollide[] armChildren ;
+
+    int currency = 5;
 
 
     CharacterController mController;
@@ -51,7 +54,7 @@ public class ZombieNav : MonoBehaviour
     private void FixedUpdate() {
 
         float distance = Vector3.Distance(player.transform.position,transform.position);
-        if (health >1){
+        if (!IsDead()){
 
             if (attacking==false){
                 if (distance >=1.4f){
@@ -124,5 +127,13 @@ public class ZombieNav : MonoBehaviour
 
     public void FinishedDying(){
         Destroy(gameObject,1);
+    }
+
+    public bool IsDead() {
+        return health <= 0;
+    }
+
+    public int GetCurrency() {
+        return currency;
     }
 }

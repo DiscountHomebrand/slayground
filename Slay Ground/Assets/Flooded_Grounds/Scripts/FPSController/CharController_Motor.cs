@@ -69,14 +69,6 @@ public class CharController_Motor : MonoBehaviour {
 		audioSource = GetComponent<AudioSource>();
 	}
 
-	void CheckForWaterHeight() {
-		//if (transform.position.y < WaterHeight) {
-		//	gravity = 0f;			
-		//} else {
-		//	gravity = -9.8f;
-		//}
-	}
-
 	void Update() {
 		if (PauseManager.IsGamePaused()) {
 			return;
@@ -88,11 +80,13 @@ public class CharController_Motor : MonoBehaviour {
 		rotX = Input.GetAxis("Mouse X") * sensitivity;
 		rotY = Input.GetAxis("Mouse Y") * sensitivity;
 
+
 		if (rotX != 0 || rotY != 0) {
 			//Debug.Log(rotX + " " + rotY);
 		}
 
 		CheckForWaterHeight();
+
 
 		CameraRotation (cam, rotX, rotY);
 
@@ -191,6 +185,7 @@ public class CharController_Motor : MonoBehaviour {
 
 			// if zombie hit
 			if (hitInfo.collider.gameObject.layer== 3){
+
 				ZombieNav zombieNav = hitInfo.collider.transform.GetComponentInParent<ZombieNav>();
 				//Debug.Log("health " +zombieNav.health);
 				if(hitInfo.collider.gameObject.tag=="ZombieHead"){
@@ -199,6 +194,10 @@ public class CharController_Motor : MonoBehaviour {
 				}else{
 					zombieNav.Damage();
 					//Debug.Log("Raycast hit body" );
+        }
+        if (zombieNav.IsDead()) {
+					// Killed zombie, add money
+					AddCurrency(zombieNav.GetCurrency());
 				}
 				
 			}
