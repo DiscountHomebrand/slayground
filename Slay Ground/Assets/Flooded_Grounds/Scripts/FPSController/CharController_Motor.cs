@@ -241,5 +241,13 @@ public class CharController_Motor : MonoBehaviour {
 		yVelocity = 5.0f;
 	}
 
+	public void lifesteal(){
+		int temp = currentHealth + 2;
+		if (temp>100){
+			temp=100;
+		}
+		UpdateHealth(temp);
+	}
+
 	
 }

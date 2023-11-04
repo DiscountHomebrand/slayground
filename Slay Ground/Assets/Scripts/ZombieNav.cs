@@ -26,6 +26,8 @@ public class ZombieNav : MonoBehaviour
 
     CharacterController mController;
 
+    CharController_Motor charController_Motor;
+
 
     public SpawnZombie spawnZombie; 
     public bool dead= false;
@@ -42,6 +44,8 @@ public class ZombieNav : MonoBehaviour
         armChildren = GetComponentsInChildren<ArmCollide>();
 
         spawnZombie = player.GetComponent<SpawnZombie>();
+
+        charController_Motor = player.GetComponent<CharController_Motor>();
 
 
     }
@@ -138,6 +142,7 @@ public class ZombieNav : MonoBehaviour
         
         Destroy(gameObject,1);
         spawnZombie.ZombieKilled();
+        charController_Motor.lifesteal();
     }
 
     public bool IsDead() {
