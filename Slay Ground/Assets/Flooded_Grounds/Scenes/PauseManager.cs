@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PauseManager : MonoBehaviour
 {
     static bool gamePaused = false;
 
     public GameObject pauseScreen;
+    public TMP_Text pauseTitle;
+    public TMP_Text scoreText;
+    // If the round is over, either victory or game over
+    bool roundEnded = false;
 
     public static bool IsGamePaused() {
         return gamePaused;
@@ -28,6 +33,11 @@ public class PauseManager : MonoBehaviour
     }
 
     void Update() {
+        if (roundEnded) {
+            // Don't allow pausing/unpausing when round is over
+            return;
+        }
+
         KeyCode pauseKey;
         if (Application.isEditor) {
             pauseKey = KeyCode.P;
@@ -70,4 +80,20 @@ public class PauseManager : MonoBehaviour
 			Cursor.lockState=CursorLockMode.Locked;
 		}
 	}
+
+    public void GameOver() {
+        if (!gamePaused) {
+            PauseGame();
+        }
+        roundEnded = true;
+        pauseTitle.text = "GAME OVER";
+    }
+
+    public void RoundVictory() {
+        if (!gamePaused) {
+            PauseGame();
+        }
+        roundEnded = true;
+        pauseTitle.text = "VICTORY";
+    }
 }

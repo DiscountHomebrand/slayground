@@ -10,17 +10,10 @@ public class CharController_Motor : MonoBehaviour {
 
 	public float speed = 10.0f;
 	public float sensitivity;
-	public float WaterHeight = 15.5f;
 	CharacterController character;
 	public GameObject cam;
 	float moveFB, moveLR;
 	float rotX, rotY;
-
-
-
-	
-
-
 
 	// Pitch (x rotation) of the camera
 	float cameraRotation = 0.0f;
@@ -60,6 +53,15 @@ public class CharController_Motor : MonoBehaviour {
 
 	// Current y velocity of character
 	float yVelocity = 0.0f;
+
+	// Number of zombie kills
+	int kills = 0;
+
+	public int victoryKills;
+
+	public PauseManager pauseManager;
+
+	public TMP_Text killsText;
 
 	void Start() {
 		UpdateAmmo(clipSize);
@@ -191,6 +193,12 @@ public class CharController_Motor : MonoBehaviour {
 					if (zombieNav.IsDead()) {
 						// Killed zombie, add money
 						AddCurrency(zombieNav.GetCurrency());
+						kills++;
+						killsText.text = "Kills: " + kills.ToString();
+
+						if (kills >= victoryKills) {
+							RoundVictory();
+						}
 					}
 				}
 			}
@@ -222,6 +230,10 @@ public class CharController_Motor : MonoBehaviour {
 	void UpdateHealth(int value) {
 		currentHealth = value;
 		healthBar.fillAmount = (float)currentHealth / (float)maxHealth;
+
+		if (currentHealth <= 0) {
+			GameOver();
+		}
 	}
 	
 	void UpdateCurrency(int amount) {
@@ -239,5 +251,15 @@ public class CharController_Motor : MonoBehaviour {
 			temp=100;
 		}
 		UpdateHealth(temp);
+	}
+
+	void GameOver() {
+		Debug.Log("Round Lose");
+		pauseManager.GameOver();
+	}
+
+	void RoundVictory() {
+		Debug.Log("Round Win");
+		pauseManager.RoundVictory();
 	}
 }

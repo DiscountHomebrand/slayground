@@ -31,7 +31,7 @@ public class ArmCollide : MonoBehaviour
             
             if (attacking){
                 CharController_Motor playerScript = collision.gameObject.GetComponent<CharController_Motor>();
-                playerScript.Damage(50);
+                playerScript.Damage(10);
                 Debug.Log("attacking");
             }
            
