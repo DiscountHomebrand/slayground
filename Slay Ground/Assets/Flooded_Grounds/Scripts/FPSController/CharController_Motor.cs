@@ -85,7 +85,7 @@ public class CharController_Motor : MonoBehaviour {
 			//Debug.Log(rotX + " " + rotY);
 		}
 
-		CheckForWaterHeight();
+		//CheckForWaterHeight();
 
 
 		CameraRotation (cam, rotX, rotY);
@@ -194,8 +194,9 @@ public class CharController_Motor : MonoBehaviour {
 				}else{
 					zombieNav.Damage();
 					//Debug.Log("Raycast hit body" );
-        }
-        if (zombieNav.IsDead()) {
+       			}
+        		
+				if (zombieNav.IsDead()) {
 					// Killed zombie, add money
 					AddCurrency(zombieNav.GetCurrency());
 				}

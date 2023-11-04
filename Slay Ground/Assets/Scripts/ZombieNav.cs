@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -24,6 +25,9 @@ public class ZombieNav : MonoBehaviour
 
 
     CharacterController mController;
+
+
+    public SpawnZombie spawnZombie; 
     public bool dead= false;
     // Start is called before the first frame update
     void Start()
@@ -36,6 +40,9 @@ public class ZombieNav : MonoBehaviour
         navMesh.updateRotation = true;
         animator = GetComponent<Animator>();
         armChildren = GetComponentsInChildren<ArmCollide>();
+
+        spawnZombie = player.GetComponent<SpawnZombie>();
+
 
     }
 
@@ -85,6 +92,8 @@ public class ZombieNav : MonoBehaviour
             }
             
         }else{  
+
+           
             attacking = false;
             animator.applyRootMotion = false;
             foreach (ArmCollide child in armChildren){
@@ -126,7 +135,9 @@ public class ZombieNav : MonoBehaviour
     }
 
     public void FinishedDying(){
+        
         Destroy(gameObject,1);
+        spawnZombie.ZombieKilled();
     }
 
     public bool IsDead() {
