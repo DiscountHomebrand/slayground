@@ -88,6 +88,7 @@ public class CharController_Motor : MonoBehaviour {
 		//CheckForWaterHeight();
 
 
+
 		CameraRotation (cam, rotX, rotY);
 
 		if (IsReloading()) {
@@ -185,8 +186,8 @@ public class CharController_Motor : MonoBehaviour {
 
 			// if zombie hit
 			if (hitInfo.collider.gameObject.layer== 3){
-
 				ZombieNav zombieNav = hitInfo.collider.transform.GetComponentInParent<ZombieNav>();
+
 				//Debug.Log("health " +zombieNav.health);
 				if(hitInfo.collider.gameObject.tag=="ZombieHead"){
 					zombieNav.Headshot();
@@ -199,8 +200,8 @@ public class CharController_Motor : MonoBehaviour {
 				if (zombieNav.IsDead()) {
 					// Killed zombie, add money
 					AddCurrency(zombieNav.GetCurrency());
+
 				}
-				
 			}
 			//Debug.Log("Raycast hit " + hitInfo.collider.gameObject.name);
 		}
