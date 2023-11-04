@@ -28,10 +28,11 @@ public class ArmCollide : MonoBehaviour
        
         if (collision.gameObject.CompareTag("Player"))
         {
-           
+            
             if (attacking){
                 CharController_Motor playerScript = collision.gameObject.GetComponent<CharController_Motor>();
                 playerScript.Damage(50);
+                Debug.Log("attacking");
             }
            
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -16,10 +17,8 @@ public class ZombieNav : MonoBehaviour
 
     public Animator animator;
 
-    GameObject[] armChildren ;
+    ArmCollide[] armChildren ;
 
-    public GameObject zombiePrefab;
-	GameObject[] gameObjects;
 
     CharacterController mController;
     public bool dead= false;
@@ -33,9 +32,7 @@ public class ZombieNav : MonoBehaviour
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.updateRotation = true;
         animator = GetComponent<Animator>();
-        armChildren = GameObject.FindGameObjectsWithTag("ZombieArm");
-
-        gameObjects = GameObject.FindGameObjectsWithTag("spawn");
+        armChildren = GetComponentsInChildren<ArmCollide>();
 
     }
 
@@ -76,11 +73,8 @@ public class ZombieNav : MonoBehaviour
                     attacking = true;
                     //set arm attacker
                     animator.applyRootMotion = true;
-                    foreach (GameObject child in armChildren){
-                        ArmCollide armCol = child.GetComponent<ArmCollide>();
-                        if (armCol != null) {
-                            armCol.SetAttacking(attacking); 
-                        }
+                    foreach (ArmCollide child in armChildren){
+                        child.SetAttacking(attacking);    
                     }
                 }
             }else { //currently swinging
@@ -90,17 +84,16 @@ public class ZombieNav : MonoBehaviour
         }else{  
             attacking = false;
             animator.applyRootMotion = false;
-            foreach (GameObject child in armChildren){
-                ArmCollide armCol = child.GetComponent<ArmCollide>();
-                if (armCol != null){
-                    armCol.SetAttacking(attacking); 
-                }
+            foreach (ArmCollide child in armChildren){
+                child.SetAttacking(attacking);    
             }
 
             // play die animation
             if (lastHeadshot){ // last shot was headshot
                 Transform zHead = transform.Find("Z_Head");
-                Destroy(zHead.gameObject);
+                if (zHead != null){
+                    Destroy(zHead.gameObject);
+                }
                 animator.SetTrigger("Headshot");
             }else{//last shot was bodyshot
                 animator.SetTrigger("Bodyshot");
@@ -123,20 +116,13 @@ public class ZombieNav : MonoBehaviour
         attacking = false;
         animator.applyRootMotion = false;
 
-        foreach (GameObject child in armChildren)
-        {
-            ArmCollide armCol = child.GetComponent<ArmCollide>();
-            if (armCol != null)
-            {
-                armCol.SetAttacking(attacking); 
-            }
+       foreach (ArmCollide child in armChildren){
+            child.SetAttacking(attacking);    
         }
        
     }
 
     public void FinishedDying(){
-        Destroy(gameObject);
-        dead =true;
-
+        Destroy(gameObject,1);
     }
 }
