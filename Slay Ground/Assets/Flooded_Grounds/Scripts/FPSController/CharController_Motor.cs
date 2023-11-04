@@ -80,14 +80,6 @@ public class CharController_Motor : MonoBehaviour {
 		rotX = Input.GetAxis("Mouse X") * sensitivity;
 		rotY = Input.GetAxis("Mouse Y") * sensitivity;
 
-
-		if (rotX != 0 || rotY != 0) {
-			//Debug.Log(rotX + " " + rotY);
-		}
-
-		CheckForWaterHeight();
-
-
 		CameraRotation (cam, rotX, rotY);
 
 		if (IsReloading()) {
@@ -185,21 +177,22 @@ public class CharController_Motor : MonoBehaviour {
 
 			// if zombie hit
 			if (hitInfo.collider.gameObject.layer== 3){
-
 				ZombieNav zombieNav = hitInfo.collider.transform.GetComponentInParent<ZombieNav>();
-				//Debug.Log("health " +zombieNav.health);
-				if(hitInfo.collider.gameObject.tag=="ZombieHead"){
-					zombieNav.Headshot();
-					//Debug.Log("Raycast hit headshot" );
-				}else{
-					zombieNav.Damage();
-					//Debug.Log("Raycast hit body" );
-        }
-        if (zombieNav.IsDead()) {
-					// Killed zombie, add money
-					AddCurrency(zombieNav.GetCurrency());
+				if (!zombieNav.IsDead()) {
+					//Debug.Log("health " +zombieNav.health);
+					if(hitInfo.collider.gameObject.tag=="ZombieHead"){
+						zombieNav.Headshot();
+						//Debug.Log("Raycast hit headshot" );
+					}else{
+						zombieNav.Damage();
+						//Debug.Log("Raycast hit body" );
+					}
+					
+					if (zombieNav.IsDead()) {
+						// Killed zombie, add money
+						AddCurrency(zombieNav.GetCurrency());
+					}
 				}
-				
 			}
 			//Debug.Log("Raycast hit " + hitInfo.collider.gameObject.name);
 		}
