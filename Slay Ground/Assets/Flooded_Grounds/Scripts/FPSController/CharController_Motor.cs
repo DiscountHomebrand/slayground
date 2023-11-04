@@ -63,6 +63,9 @@ public class CharController_Motor : MonoBehaviour {
 
 	public TMP_Text killsText;
 
+	// Which layers are valid to shoot
+	public LayerMask shootLayerMask;
+
 	void Start() {
 		UpdateAmmo(clipSize);
 		UpdateHealth(maxHealth);
@@ -173,7 +176,7 @@ public class CharController_Motor : MonoBehaviour {
 
 		// Cast ray from camera
 		RaycastHit hitInfo;
-		if (Physics.Raycast(cam.transform.position, camDirection, out hitInfo)) {
+		if (Physics.Raycast(cam.transform.position, camDirection, out hitInfo, Mathf.Infinity, shootLayerMask)) {
 			// Instantiate new bullet impact pointing back at the camera
 			Instantiate(bulletImpactPrefab, hitInfo.point, Quaternion.FromToRotation(Vector3.forward, -camDirection));
 
