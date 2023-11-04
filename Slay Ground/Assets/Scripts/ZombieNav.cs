@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -10,12 +11,20 @@ public class ZombieNav : MonoBehaviour
     public GameObject player;
     Vector3 mVelocity ;
     bool attacking = false;
+    bool lastHeadshot = false;
 
     public float health = 100f;
 
+
+    public Animator animator;
+
+    ArmCollide[] armChildren ;
+
     int currency = 5;
 
+
     CharacterController mController;
+    public bool dead= false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +34,9 @@ public class ZombieNav : MonoBehaviour
       
         navMesh = GetComponent<NavMeshAgent>();
         navMesh.updateRotation = true;
+        animator = GetComponent<Animator>();
+        armChildren = GetComponentsInChildren<ArmCollide>();
+
     }
 
     // Update is called once per frame
@@ -40,11 +52,12 @@ public class ZombieNav : MonoBehaviour
        // navMesh.Move((mVelocity)*Time.deltaTime);
     }
     private void FixedUpdate() {
+
         float distance = Vector3.Distance(player.transform.position,transform.position);
         if (!IsDead()){
 
             if (attacking==false){
-                if (distance >=2.0){
+                if (distance >=1.4f){
                     Quaternion targetRotation = Quaternion.LookRotation(navMesh.velocity);
                     transform.rotation = targetRotation;
                     navMesh.SetDestination(player.transform.position);  
@@ -59,26 +72,61 @@ public class ZombieNav : MonoBehaviour
                     navMesh.velocity =  Vector3.zero;
 
                     //insert attacking animation
+                    animator.SetTrigger("Attack");
                     attacking = true;
+                    //set arm attacker
+                    animator.applyRootMotion = true;
+                    foreach (ArmCollide child in armChildren){
+                        child.SetAttacking(attacking);    
+                    }
                 }
-            }else{
-                //if atacking animation finished nextline
-                attacking=false;
+            }else { //currently swinging
+
             }
             
-        }else{
+        }else{  
+            attacking = false;
+            animator.applyRootMotion = false;
+            foreach (ArmCollide child in armChildren){
+                child.SetAttacking(attacking);    
+            }
+
             // play die animation
-            // if die animation done nextline
-            Destroy(gameObject,1);
+            if (lastHeadshot){ // last shot was headshot
+                Transform zHead = transform.Find("Z_Head");
+                if (zHead != null){
+                    Destroy(zHead.gameObject);
+                }
+                animator.SetTrigger("Headshot");
+            }else{//last shot was bodyshot
+                animator.SetTrigger("Bodyshot");
+            }
+            
         }
     }
 
     public void Headshot(){
         health -= 50f;
+        lastHeadshot = true;
     }
 
     public void Damage(){
         health -=10f;
+        lastHeadshot = false;
+    }
+
+    public void AttackingFinished(){
+        attacking = false;
+        animator.applyRootMotion = false;
+
+       foreach (ArmCollide child in armChildren){
+            child.SetAttacking(attacking);    
+        }
+       
+    }
+
+    public void FinishedDying(){
+        Destroy(gameObject,1);
     }
 
     public bool IsDead() {
