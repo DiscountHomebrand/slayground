@@ -29,4 +29,9 @@ public class MainMenu : MonoBehaviour
         gameObject.transform.parent.Find("AboutScreen").gameObject.SetActive(true);
         gameObject.SetActive(false);     
     }
+
+    public void ShowControls() {
+        gameObject.transform.parent.Find("ControlsScreen").gameObject.SetActive(true);
+        gameObject.SetActive(false);  
+    }
 }
