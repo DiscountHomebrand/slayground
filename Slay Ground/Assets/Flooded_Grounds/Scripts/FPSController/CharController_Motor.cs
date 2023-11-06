@@ -65,6 +65,7 @@ public class CharController_Motor : MonoBehaviour {
 
 	// Which layers are valid to shoot
 	public LayerMask shootLayerMask;
+	public float hittimer = 0.0f;
 
 	void Start() {
 		UpdateAmmo(clipSize);
@@ -77,6 +78,10 @@ public class CharController_Motor : MonoBehaviour {
 	void Update() {
 		if (PauseManager.IsGamePaused()) {
 			return;
+		}
+
+		if (hittimer > 0.0f){
+			hittimer -= Time.deltaTime;
 		}
 
 		moveFB = Input.GetAxis("Horizontal") * speed;
@@ -211,8 +216,12 @@ public class CharController_Motor : MonoBehaviour {
 	}
 
 	public void Damage(int amount) {
-		int newHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
-		UpdateHealth(newHealth);
+		if (hittimer <= 0.0f){
+			hittimer = 0.5f;
+			int newHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
+			UpdateHealth(newHealth);	
+		}
+		
 	}
 
 	public void AddCurrency(int amount) {

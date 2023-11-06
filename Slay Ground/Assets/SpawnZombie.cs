@@ -39,7 +39,7 @@ public class SpawnZombie : MonoBehaviour
                     Instantiate(zombiePrefab, spawn.transform.position, Quaternion.identity);
                     zombiesCurrently++;
                 }
-                spawnInterval -= spawnReduced;
+                spawnInterval = spawnInterval/ spawnReduced;
                 spawnTimer = spawnInterval;
                 if (spawnTimer < minspawn){
                     spawnTimer = minspawn;
