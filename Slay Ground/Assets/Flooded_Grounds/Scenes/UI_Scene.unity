@@ -1513,20 +1513,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'W - Forward
-
-    A - Left
-
-    S - Right
-
-    D - Back
-
-    Spacebar -
-    Jump
-
-    R - Reload
-
-    Esc - Pause + menu '
+  m_text: "W - Forward\nA - Left\nS - Right\nD - Back\nSpacebar - Jump\nR - Reload\nEsc
+    - Pause + menu \nMouse - Camera\nMouse Left Click - Shoot"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f8cfc73cf6e32d745a5dd5da839252d2, type: 2}
   m_sharedMaterial: {fileID: -8233919517875392344, guid: f8cfc73cf6e32d745a5dd5da839252d2, type: 2}
